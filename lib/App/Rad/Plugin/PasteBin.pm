@@ -48,5 +48,25 @@ sub pastebin{
        }
    }
 }
+sub pastebin_download{
+   my $c    = shift;
+   my $code = shift;
+
+   $ua = LWP::UserAgent->new;
+   $ua->agent("App::Rad::Plugin::PasteBin");
+
+   my $req = HTTP::Request->new(GET => "http://pastebin.com/pastebin.php?dl=$code");
+   $req->content_type("text/html");
+   my $res = $ua->request($req);
+   if ($res->is_success) {
+      my $file = exists $c->stash->{file} ? $c->stash->{file} : $code;
+      $c->stash->{file} = $file;
+      open(my $FILE, ">", $file);
+      print {$FILE} $res->content;
+      close $FILE;
+      return 1
+   }
+   0
+}
 
 42;
