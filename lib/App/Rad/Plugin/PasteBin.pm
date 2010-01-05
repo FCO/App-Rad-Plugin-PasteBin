@@ -3,6 +3,8 @@ package App::Rad::Plugin::PasteBin;
 use URI::Escape;
 use LWP::UserAgent;
 
+# just testing
+
 sub pastebin{
    my $c = shift;
 
